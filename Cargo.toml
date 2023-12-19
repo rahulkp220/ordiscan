@@ -7,7 +7,7 @@ description = "Ordiscan API Wrapper"
 readme = "README.md"
 repository = "https://github.com/rahulkp220/ordiscan"
 license = "MIT OR Apache-2.0"
-keywords = ["crypto", "api", "api wrapper"]
+keywords = ["crypto", "api"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
