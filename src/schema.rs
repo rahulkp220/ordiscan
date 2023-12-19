@@ -4,13 +4,14 @@ use serde::Deserialize;
 use std::fmt;
 use std::fmt::Formatter;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct BRCAction {
   tick: String,
+  amount: usize,
   action: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct InscriptionInfo {
   inscription_id: String,
   inscription_number: usize,
@@ -21,7 +22,7 @@ pub struct InscriptionInfo {
   genesis_output: String,
   timestamp: String,
   content_url: String,
-  submodules: Option<String>,
+  submodules: Option<Vec<String>>,
   sats_name: Option<String>,
   brc_action: Option<BRCAction>,
 }

@@ -2,12 +2,35 @@ use ordiscan::Ordiscan;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  let api_key = String::from("<YOUR-API-KEY-HERE>");
+  let api_key = String::from("<API_KEY>");
   let ordiclient = Ordiscan::new(api_key).unwrap();
+
+  // get address acitivity
   let address_activity = ordiclient
-    .get_address_activity(String::from("<VALID-BITCOIN-ADDRESS>"))
+    .get_address_activity(String::from("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"))
     .await?;
 
-  println!("{:?}", address_activity.first());
+  // get inscription info
+  let inspection_info = ordiclient
+    .get_inscription_info(
+      Some("b183b76a2635d1937a60e3eb12e868a64e5fff5e56819cb348cd442877bf95e7i0".to_string()),
+      None,
+    )
+    .await?;
+
+  // get list of inscription info
+  let list_of_inscriptions = ordiclient
+    .get_list_of_inscriptions(
+      Some("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh".to_string()),
+      None,
+      None,
+      None,
+      None,
+    )
+    .await?;
+
+  println!("{:?}", address_activity);
+  println!("{:?}", inspection_info);
+  println!("{:?}", list_of_inscriptions);
   Ok(())
 }
