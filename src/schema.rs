@@ -1,17 +1,13 @@
-#![allow(unused)]
-
 use serde::Deserialize;
-use std::fmt;
-use std::fmt::Formatter;
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
 pub struct BRCAction {
   tick: String,
   amount: usize,
   action: String,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
 pub struct InscriptionInfo {
   inscription_id: String,
   inscription_number: usize,
@@ -27,7 +23,7 @@ pub struct InscriptionInfo {
   brc_action: Option<BRCAction>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
 pub struct AddressActivity {
   txid: String,
   r#type: String,

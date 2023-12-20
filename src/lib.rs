@@ -1,11 +1,15 @@
-#![allow(unused_variables)]
-
 pub mod schema;
 use reqwest::{self, Client};
 use std::{collections::HashMap, time::Duration};
 use url::Url;
 
 static API_BASE_URL: &str = "https://ordiscan.com/v1";
+
+#[derive(Debug, thiserror::Error)]
+pub enum OrdiscanError {
+  #[error("api error")]
+  RequestError(#[from] reqwest::Error),
+}
 
 pub struct Ordiscan {
   client: reqwest::Client,
@@ -24,16 +28,14 @@ impl Ordiscan {
   // https://ordiscan.com/docs/api#get-inscription-info
   pub async fn get_inscription_info(
     &self,
-    id: Option<String>,
+    id: Option<&str>,
     number: Option<usize>,
-  ) -> Result<schema::InscriptionInfo, anyhow::Error> {
+  ) -> Result<schema::InscriptionInfo, OrdiscanError> {
     let header = format!("Bearer {}", self.api_key);
-    let mut url = Url::parse(format!("{}/inscription", API_BASE_URL).as_str())?;
+    let mut url = Url::parse(format!("{}/inscription", API_BASE_URL).as_str()).unwrap();
 
     if id.is_some() {
-      url
-        .query_pairs_mut()
-        .append_pair("id", id.unwrap().as_str());
+      url.query_pairs_mut().append_pair("id", id.unwrap());
     }
 
     if number.is_some() {
@@ -58,27 +60,28 @@ impl Ordiscan {
   // https://ordiscan.com/docs/api#get-list-of-inscriptions
   pub async fn get_list_of_inscriptions(
     &self,
-    address: Option<String>,
-    content_type: Option<String>,
-    sort: Option<String>,
+    address: Option<&str>,
+    content_type: Option<&str>,
+    sort: Option<&str>,
     after_number: Option<usize>,
     before_number: Option<usize>,
-  ) -> Result<Vec<schema::InscriptionInfo>, anyhow::Error> {
+  ) -> Result<Vec<schema::InscriptionInfo>, OrdiscanError> {
     let header = format!("Bearer {}", self.api_key);
-    let sort = sort.unwrap_or(String::from("inscription_number_desc"));
-    let mut url = Url::parse(format!("{}/inscriptions?sort={}", API_BASE_URL, sort).as_str())?;
+    let sort = sort.unwrap_or("inscription_number_desc");
+    let mut url =
+      Url::parse(format!("{}/inscriptions?sort={}", API_BASE_URL, sort).as_str()).unwrap();
 
     // TODO make this look better
     // dynamically create query params
     if address.is_some() {
       url
         .query_pairs_mut()
-        .append_pair("address", address.unwrap().as_str());
+        .append_pair("address", address.unwrap());
     }
     if content_type.is_some() {
       url
         .query_pairs_mut()
-        .append_pair("content_type", content_type.unwrap().as_str());
+        .append_pair("content_type", content_type.unwrap());
     }
     if after_number.is_some() {
       url
@@ -108,8 +111,8 @@ impl Ordiscan {
   // https://ordiscan.com/docs/api#get-address-activity
   pub async fn get_address_activity(
     &self,
-    address: String,
-  ) -> Result<Vec<schema::AddressActivity>, anyhow::Error> {
+    address: &str,
+  ) -> Result<Vec<schema::AddressActivity>, OrdiscanError> {
     let api_url = format!("{}/activity?address={}", API_BASE_URL, address);
     let header = format!("Bearer {}", self.api_key);
 
