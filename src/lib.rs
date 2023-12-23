@@ -1,5 +1,4 @@
 pub mod schema;
-use derive_builder;
 use reqwest::{self, Client};
 use std::{collections::HashMap, time::Duration};
 use url::Url;
@@ -20,7 +19,7 @@ pub struct Ordiscan {
   api_key: String,
 }
 
-#[derive(derive_builder::Builder, Debug)]
+#[derive(Debug)]
 pub struct GetListOfInscriptionParams<'a> {
   pub address: Option<&'a str>,
   pub content_type: Option<&'a str>,
@@ -29,7 +28,7 @@ pub struct GetListOfInscriptionParams<'a> {
   pub before_number: Option<usize>,
 }
 
-#[derive(derive_builder::Builder, Debug)]
+#[derive(Debug)]
 pub struct GetInscriptionInfoParams<'a> {
   pub id: Option<&'a str>,
   pub number: Option<usize>,

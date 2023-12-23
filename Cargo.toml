@@ -12,7 +12,6 @@ keywords = ["crypto", "api"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-derive_builder = "0.12.0"
 reqwest = { version = "0.11.22", features = ["json"] }
 serde = { version = "1.0.193", features = ["derive"] }
 serde_json = "1.0.108"
