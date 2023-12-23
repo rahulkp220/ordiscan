@@ -1,4 +1,4 @@
-use ordiscan::Ordiscan;
+use ordiscan::{GetInscriptionInfoParams, GetListOfInscriptionParams, Ordiscan};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -12,21 +12,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   // get inscription info
   let inspection_info = ordiclient
-    .get_inscription_info(
-      Some("b183b76a2635d1937a60e3eb12e868a64e5fff5e56819cb348cd442877bf95e7i0"),
-      None,
-    )
+    .get_inscription_info(GetInscriptionInfoParams {
+      id: Some("b183b76a2635d1937a60e3eb12e868a64e5fff5e56819cb348cd442877bf95e7i0"),
+      number: None,
+    })
     .await?;
 
   // get list of inscription info
   let list_of_inscriptions = ordiclient
-    .get_list_of_inscriptions(
-      Some("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"),
-      None,
-      None,
-      None,
-      None,
-    )
+    .get_list_of_inscriptions(GetListOfInscriptionParams {
+      address: Some("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"),
+      content_type: None,
+      sort: None,
+      after_number: None,
+      before_number: None,
+    })
     .await?;
 
   println!("{:#?}", address_activity);
