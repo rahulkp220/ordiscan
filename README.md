@@ -1,1 +1,2 @@
-# [Ordiscan](https://ordiscan.com/) API wrapper in Rust 🦀 
+# [Ordiscan](https://ordiscan.com/) 
+API wrapper in Rust 🦀 
