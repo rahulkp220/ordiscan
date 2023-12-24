@@ -1,6 +1,6 @@
 [package]
 name = "ordiscan"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Rahul <rahulkp220@gmail.com>"]
 description = "Ordiscan API Wrapper"
