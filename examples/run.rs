@@ -1,4 +1,4 @@
-use ordiscan::{GetInscriptionInfoParams, GetListOfInscriptionParams, Ordiscan};
+use ordiscan::{GetInscriptionInfoParams, GetListOfInscriptionParams, Ordiscan, Sort};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -22,8 +22,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   let list_of_inscriptions = ordiclient
     .get_list_of_inscriptions(GetListOfInscriptionParams {
       address: Some("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"),
+      sort: Sort::InscriptionNumberDesc,
       content_type: None,
-      sort: None,
       after_number: None,
       before_number: None,
     })

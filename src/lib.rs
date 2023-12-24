@@ -23,7 +23,7 @@ pub struct Ordiscan {
 pub struct GetListOfInscriptionParams<'a> {
   pub address: Option<&'a str>,
   pub content_type: Option<&'a str>,
-  pub sort: Option<&'a str>,
+  pub sort: Sort,
   pub after_number: Option<usize>,
   pub before_number: Option<usize>,
 }
@@ -32,6 +32,21 @@ pub struct GetListOfInscriptionParams<'a> {
 pub struct GetInscriptionInfoParams<'a> {
   pub id: Option<&'a str>,
   pub number: Option<usize>,
+}
+
+#[derive(Debug)]
+pub enum Sort {
+  InscriptionNumberDesc,
+  InscriptionNumberAsc,
+}
+
+impl Sort {
+  pub fn as_str(&self) -> &'static str {
+    match self {
+      Sort::InscriptionNumberDesc => "inscription_number_desc", // default
+      Sort::InscriptionNumberAsc => "inscription_number_asc",
+    }
+  }
 }
 
 impl<'a> Ordiscan {
@@ -86,9 +101,15 @@ impl<'a> Ordiscan {
     params: GetListOfInscriptionParams<'a>,
   ) -> Result<Vec<schema::InscriptionInfo>> {
     let header = format!("Bearer {}", self.api_key);
-    let sort = params.sort.unwrap_or("inscription_number_desc");
-    let mut url =
-      Url::parse(format!("{}/inscriptions?sort={}", API_BASE_URL, sort).as_str()).unwrap();
+    let mut url = Url::parse(
+      format!(
+        "{}/inscriptions?sort={}",
+        API_BASE_URL,
+        params.sort.as_str()
+      )
+      .as_str(),
+    )
+    .unwrap();
 
     // TODO make this look better
     // dynamically create query params
